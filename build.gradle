@@ -33,6 +33,10 @@ dependencies {
     
     implementation("org.apache.jena:jena:3.17.0")
     implementation("org.apache.jena:jena-rdfconnection:3.17.0")
+    implementation("org.apache.jena:jena-querybuilder:3.17.0")
+
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+    implementation("io.swagger.core.v3:swagger-annotations")
 }
 
 

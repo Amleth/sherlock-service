@@ -60,6 +60,6 @@ class JwtAuthenticationSpec extends Specification {
 
         then:
         response.status == HttpStatus.OK
-        response.body() == 'sherlock'
+        response.body() == '4b15a57d-8cae-43c5-8096-187b58d29327'
     }
 }
