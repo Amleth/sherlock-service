@@ -22,7 +22,7 @@ Documentation de l'API : [Micronaut OpenAPI/Swagger Support](https://micronaut-
 
 1) Télécharger & dézipper [Apache Jena FUseki](https://jena.apache.org/download/index.cgi).
 2) Éxécuter fuseki-server.
-3) Créer un dataset : aller sur http://localhost:3030/, onglet « manage dataset »,, icône « add ew dataset », saisir un nom et cocher « *Persistent (TDB2) – dataset will persist across Fuseki restarts* ».
+3) Créer un dataset : aller sur http://localhost:3030/, onglet « manage dataset », icône « add new dataset », saisir un nom et cocher « *Persistent (TDB2) – dataset will persist across Fuseki restarts* ».
 4) Lancer l'application : ```./gradlew run --continuous```.
 
 ## Exemples d'interactions avec l'API REST
