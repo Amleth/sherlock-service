@@ -14,6 +14,18 @@ public class Sherlock {
         return "http://www.cidoc-crm.org/cidoc-crm/";
     }
 
+    public String getDctermsPrefix() {
+        return "http://purl.org/dc/terms/";
+    }
+
+    public String getRdfPrefix() {
+        return "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+    }
+
+    public String getRdfsPrefix() {
+        return "http://www.w3.org/2000/01/rdf-schema#";
+    }
+
     public String getGraph() {
         return "http://data-iremus.huma-num.fr/graph/sherlock";
     }
@@ -45,6 +57,10 @@ public class Sherlock {
     }
 
     public String resolvePrefix(String uri) {
-        return uri.replace("crm:", this.getCrmPrefix());
+        return uri
+                .replace("crm:", this.getCrmPrefix())
+                .replace("dcterms:", this.getDctermsPrefix())
+                .replace("rdf:", this.getRdfPrefix())
+                .replace("rdfs:", this.getRdfsPrefix());
     }
 }
