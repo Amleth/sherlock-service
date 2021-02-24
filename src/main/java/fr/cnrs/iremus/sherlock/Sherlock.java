@@ -6,6 +6,7 @@ import org.apache.jena.rdf.model.Model;
 
 import javax.inject.Singleton;
 import java.io.ByteArrayOutputStream;
+import java.util.UUID;
 
 @Singleton
 public class Sherlock {
@@ -23,6 +24,10 @@ public class Sherlock {
 
     public String makeUpdateQuery(Model m) {
         return "INSERT DATA { GRAPH <" + this.getGraph() + "> {" + this.modelToString(m) + "}}";
+    }
+
+    public String makeUri() {
+        return this.getResourcePrefix() + UUID.randomUUID().toString();
     }
 
     public String modelToString(Model m) {
