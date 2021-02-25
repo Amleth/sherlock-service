@@ -3,6 +3,13 @@ package fr.cnrs.iremus.sherlock;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFFormat;
+import org.apache.jena.vocabulary.DCTerms;
+import org.apache.jena.vocabulary.RDF;
+import org.apache.jena.vocabulary.RDFS;
 
 import javax.inject.Singleton;
 import java.io.ByteArrayOutputStream;
@@ -10,36 +17,26 @@ import java.util.UUID;
 
 @Singleton
 public class Sherlock {
-    public String getCrmPrefix() {
-        return "http://www.cidoc-crm.org/cidoc-crm/";
-    }
+    private static final Model m_model = ModelFactory.createDefaultModel();
 
-    public String getDctermsPrefix() {
-        return "http://purl.org/dc/terms/";
-    }
-
-    public String getRdfPrefix() {
-        return "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-    }
-
-    public String getRdfsPrefix() {
-        return "http://www.w3.org/2000/01/rdf-schema#";
-    }
-
-    public String getGraph() {
-        return "http://data-iremus.huma-num.fr/graph/sherlock";
+    public Resource getGraph() {
+        return m_model.createResource("http://data-iremus.huma-num.fr/graph/sherlock");
     }
 
     public String getResourcePrefix() {
         return "http://data-iremus.huma-num.fr/id/";
     }
 
-    public String makeUpdateQuery(Model m) {
-        return "INSERT DATA { GRAPH <" + this.getGraph() + "> {" + this.modelToString(m) + "}}";
+    public String makeIri(String id) {
+        return "http://data-iremus.huma-num.fr/id/" + id;
     }
 
-    public String makeUri() {
-        return this.getResourcePrefix() + UUID.randomUUID().toString();
+    public String makeIri() {
+        return this.makeIri(UUID.randomUUID().toString());
+    }
+
+    public String makeUpdateQuery(Model m) {
+        return "INSERT DATA { GRAPH <" + this.getGraph() + "> {" + this.modelToString(m) + "}}";
     }
 
     public String modelToString(Model m) {
@@ -49,18 +46,25 @@ public class Sherlock {
         return baos.toString();
     }
 
-    public String resultSetToString(ResultSet rs) {
+    public String resultSetToJson(ResultSet rs) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ResultSetFormatter.outputAsJSON(outputStream, rs);
 
         return outputStream.toString();
     }
 
+    public String modelToJson(Model m) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        RDFDataMgr.write(outputStream, m, RDFFormat.JSONLD);
+
+        return outputStream.toString();
+    }
+
     public String resolvePrefix(String uri) {
         return uri
-                .replace("crm:", this.getCrmPrefix())
-                .replace("dcterms:", this.getDctermsPrefix())
-                .replace("rdf:", this.getRdfPrefix())
-                .replace("rdfs:", this.getRdfsPrefix());
+                .replace("crm:", CIDOCCRM.getURI())
+                .replace("dcterms:", DCTerms.getURI())
+                .replace("rdf:", RDF.getURI())
+                .replace("rdfs:", RDFS.getURI());
     }
 }

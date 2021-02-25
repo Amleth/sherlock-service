@@ -35,7 +35,7 @@ class Common {
     void fuck() {
         RDFConnectionRemoteBuilder builder = RDFConnectionFuseki.create().destination('http://localhost:3030/iremus');
         try (RDFConnectionFuseki conn = (RDFConnectionFuseki) builder.build()) {
-            conn.delete(sherlock.getGraph());
+            conn.delete(sherlock.getGraph().toString());
         }
         catch (HttpException e) {
         }

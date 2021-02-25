@@ -23,14 +23,23 @@ class ResourceControllerSpec extends Specification {
     void 'test it works'() {
         when:
         common.fuck()
-        String response = client.toBlocking().retrieve(common.makePostRequestWithAuthorization(client, '/resource', Map.of("rdf:type", "crm:E32_Authority_Document")))
+        String json = client.toBlocking().retrieve(common.makePostRequestWithAuthorization(client, '/resource', Map.of(
+                "rdf:type", "crm:E32_Authority_Document",
+                "crm:P1_is_identified_by", "Ma liste de concepts"
+        )))
 
         then:
-        Object json = new ObjectMapper().readValue(response, Object.class)
-        json.results.bindings.size() == 3
-        json.results.bindings.every { it["e32"].value.startsWith(sherlock.getResourcePrefix()) }
-        json.results.bindings.find { it["e32_p"].value == sherlock.resolvePrefix("rdf:type") }["e32_o"].value == sherlock.resolvePrefix("crm:E32_Authority_Document")
-        json.results.bindings.find { it["e32_p"].value == sherlock.resolvePrefix("dcterms:creator") }["e32_o"].value == sherlock.getResourcePrefix() + "4b15a57d-8cae-43c5-8096-187b58d29327"
-        dateService.isValidISODateTime(json.results.bindings.find { it["e32_p"].value == sherlock.resolvePrefix("dcterms:created") }["e32_o"].value)
+        Object response = new ObjectMapper().readValue(json, Object.class)
+
+        Object e32 = response["@graph"].find { it["@type"] == "http://www.cidoc-crm.org/cidoc-crm/E32_Authority_Document" }
+        e32.keySet().size() == 4
+        e32["@id"].startsWith(sherlock.getResourcePrefix())
+        e32["creator"] == sherlock.makeIri("4b15a57d-8cae-43c5-8096-187b58d29327")
+        dateService.isValidISODateTime(e32["created"])
+
+        Object e13 = response["@graph"].find { it["@type"] == "http://www.cidoc-crm.org/cidoc-crm/E13_Attribute_Assignment" }
+        e13.keySet().size() == 7
+        e13["@id"].startsWith(sherlock.getResourcePrefix())
+        //TODO
     }
 }
