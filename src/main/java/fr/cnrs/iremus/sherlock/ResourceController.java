@@ -44,28 +44,28 @@ public class ResourceController {
         String authenticatedUserUuid = (String) authentication.getAttributes().get("uuid");
         String now = dateService.getNow();
         // new resource
-        String newResourceUri = sherlock.makeIri();
-        String newResourceTypeUri = sherlock.resolvePrefix(body.get("rdf:type"));
+        String newResourceIri = sherlock.makeIri();
+        String newResourceTypeIri = sherlock.resolvePrefix(body.get("rdf:type"));
         // e13 p1
         String identifier = sherlock.resolvePrefix(body.get("crm:P1_is_identified_by"));
-        String e13p1Uri = sherlock.makeIri();
+        String e13p1Iri = sherlock.makeIri();
 
         // UPDATE QUERY
         Model m = ModelFactory.createDefaultModel();
         // new resource
-        Resource newResourceResource = m.createResource(newResourceUri);
-        Resource authenticatedUserResource = m.createResource(sherlock.makeIri(authenticatedUserUuid));
-        m.add(newResourceResource, RDF.type, m.createResource(newResourceTypeUri));
-        m.add(newResourceResource, DCTerms.creator, authenticatedUserResource);
-        m.add(newResourceResource, DCTerms.created, now);
+        Resource newResource = m.createResource(newResourceIri);
+        Resource authenticatedUser = m.createResource(sherlock.makeIri(authenticatedUserUuid));
+        m.add(newResource, RDF.type, m.createResource(newResourceTypeIri));
+        m.add(newResource, DCTerms.creator, authenticatedUser);
+        m.add(newResource, DCTerms.created, now);
         // e13 p1
-        Resource e13p1Resource = m.createResource(e13p1Uri);
-        m.add(e13p1Resource, RDF.type, CIDOCCRM.E13_Attribute_Assignment);
-        m.add(e13p1Resource, CIDOCCRM.P14_carried_out_by, authenticatedUserResource);
-        m.add(e13p1Resource, CIDOCCRM.P140_assigned_attribute_to, newResourceResource);
-        m.add(e13p1Resource, CIDOCCRM.P141_assigned, m.createLiteral(identifier));
-        m.add(e13p1Resource, CIDOCCRM.P177_assigned_property_type, CIDOCCRM.P1_is_identified_by);
-        m.add(e13p1Resource, DCTerms.created, now);
+        Resource e13p1 = m.createResource(e13p1Iri);
+        m.add(e13p1, RDF.type, CIDOCCRM.E13_Attribute_Assignment);
+        m.add(e13p1, CIDOCCRM.P14_carried_out_by, authenticatedUser);
+        m.add(e13p1, CIDOCCRM.P140_assigned_attribute_to, newResource);
+        m.add(e13p1, CIDOCCRM.P141_assigned, m.createLiteral(identifier));
+        m.add(e13p1, CIDOCCRM.P177_assigned_property_type, CIDOCCRM.P1_is_identified_by);
+        m.add(e13p1, DCTerms.created, now);
         String updateWithModel = sherlock.makeUpdateQuery(m);
 
         RDFConnectionRemoteBuilder builder = RDFConnectionFuseki.create().destination(jena);
@@ -76,11 +76,11 @@ public class ResourceController {
 
             // AND READ IT BACK AS JSON-LD
             ConstructBuilder cb = new ConstructBuilder()
-                    .addConstruct(newResourceResource, "?r_p", "?r_o")
-                    .addConstruct(e13p1Resource, "?e13p1_p", "?e13p1_o")
-                    .addGraph(sherlock.getGraph(), newResourceResource, "?r_p", "?r_o")
-                    .addGraph(sherlock.getGraph(), e13p1Resource, "?e13p1_p", "?e13p1_o")
-                    .addGraph(sherlock.getGraph(), e13p1Resource, CIDOCCRM.P140_assigned_attribute_to, newResourceResource);
+                    .addConstruct(newResource, "?r_p", "?r_o")
+                    .addConstruct(e13p1, "?e13p1_p", "?e13p1_o")
+                    .addGraph(sherlock.getGraph(), newResource, "?r_p", "?r_o")
+                    .addGraph(sherlock.getGraph(), e13p1, "?e13p1_p", "?e13p1_o")
+                    .addGraph(sherlock.getGraph(), e13p1, CIDOCCRM.P140_assigned_attribute_to, newResource);
             Query q = cb.build();
             QueryExecution qe = conn.query(q);
             Model res = qe.execConstruct();
