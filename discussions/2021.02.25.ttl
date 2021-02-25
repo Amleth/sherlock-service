@@ -1,0 +1,141 @@
+# user = c04d9cb0-a31d-4b84-9e6a-292c52101722
+
+@base <http://data-iremus.huma-num.fr/id/> .
+
+# On arrive dans l'espace de création de vocabulaires contrôlés. Il est vide par défaut. Créer un vocabulaire (crm:E32_Authority_Document).
+
+# POST /resource
+# nom="Mon premier vocabulaire contrôlé"
+# type=crm:E32_Authority_Document
+
+<c9a44f7e-13d8-4810-95a5-0544ba8f5600>
+    a crm:E32_Authority_Document ;
+    dcterms:creator <c04d9cb0-a31d-4b84-9e6a-292c52101722> ;
+    dcterms:created "2021-02-25" ;
+    .
+
+<af6457c4-5e43-447b-b52e-4cbd431d8ac6>
+    a crm:E13_Attribute_Assignment ;
+    dcterms:created "2021-02-25" ;
+    crm:P14_carried_out_by <c04d9cb0-a31d-4b84-9e6a-292c52101722> ;
+    crm:P140_assigned_attribute_to <c9a44f7e-13d8-4810-95a5-0544ba8f5600> ;
+    crm:P177_assigned_property_type crm:P1_is_identified_by ;
+    crm:P141_assigned "Mon premier vocabulaire contrôlé" ;
+    .
+
+# Route de création générique de triplets
+
+# POST /triple
+# DELETE /triple
+# s=http://data-iremus.huma-num.fr/id/c9a44f7e-13d8-4810-95a5-0544ba8f5600
+# p=crm:P71_lists
+# o=http://data-iremus.huma-num.fr/id/f7bb9c85-990a-4ca6-bb63-89a477005460
+
+<c9a44f7e-13d8-4810-95a5-0544ba8f5600>
+    crm:P71_lists <f7bb9c85-990a-4ca6-bb63-89a477005460> ;
+    .
+
+# On veut créer un premier concept
+
+# Comment faire une route qui crée une ressource et l'utilise dans plusieurs nouveaux triplets ?
+# POST /resource_and_triples || /resource_linked
+# nom="Mon premier concept"
+# type=crm:E55_Type
+# [
+#    {s:http://data-iremus.huma-num.fr/id/c9a44f7e-13d8-4810-95a5-0544ba8f5600, p:crm:P71_lists}
+# ]
+
+<f7bb9c85-990a-4ca6-bb63-89a477005460>
+    a crm:E55_Type ;
+    dcterms:creator <c04d9cb0-a31d-4b84-9e6a-292c52101722> ;
+    dcterms:created "2021-02-25" ;
+    .
+
+<7ec399df-b1f1-4843-8d58-58900f45bc84>
+    a crm:E13_Attribute_Assignment ;
+    dcterms:created "2021-02-25" ;
+    crm:P14_carried_out_by <c04d9cb0-a31d-4b84-9e6a-292c52101722> ;
+    crm:P140_assigned_attribute_to <f7bb9c85-990a-4ca6-bb63-89a477005460> ;
+    crm:P177_assigned_property_type crm:P1_is_identified_by ;
+    crm:P141_assigned "Mon premier concept" ;
+    .
+
+<c9a44f7e-13d8-4810-95a5-0544ba8f5600>
+    crm:P71_lists <f7bb9c85-990a-4ca6-bb63-89a477005460> ;
+    .
+
+# On veut créer un concept et le relier à un concept existant
+# POST /resource_and_triples || /resource_linked
+# nom="Mon second concept"
+# type=crm:E55_Type
+# [
+#    {p:crm:P127_has_broader_term, o:http://data-iremus.huma-num.fr/id/f7bb9c85-990a-4ca6-bb63-89a477005460}
+#    {s:http://data-iremus.huma-num.fr/id/c9a44f7e-13d8-4810-95a5-0544ba8f5600, p:crm:P71_lists}
+# ]
+
+<239d3b62-d98c-4a7e-be96-dc2e556338a2>
+    a crm:E55_Type ;
+    dcterms:creator <c04d9cb0-a31d-4b84-9e6a-292c52101722> ;
+    dcterms:created "2021-02-25" ;
+    .
+
+<81731880-41b1-4105-ace8-36f01882908d>
+    a crm:E13_Attribute_Assignment ;
+    dcterms:created "2021-02-25" ;
+    crm:P14_carried_out_by <c04d9cb0-a31d-4b84-9e6a-292c52101722> ;
+    crm:P140_assigned_attribute_to <239d3b62-d98c-4a7e-be96-dc2e556338a2> ;
+    crm:P177_assigned_property_type crm:P1_is_identified_by ;
+    crm:P141_assigned "Mon second concept" ;
+    .
+
+<c9a44f7e-13d8-4810-95a5-0544ba8f5600> crm:P71_lists <239d3b62-d98c-4a7e-be96-dc2e556338a2> .
+
+<239d3b62-d98c-4a7e-be96-dc2e556338a2> crm:P127_has_broader_term <f7bb9c85-990a-4ca6-bb63-89a477005460> .
+
+# On veut changer le parent d'un concept
+# PUT /triple
+# old_s=b
+# old_p=crm:P127_has_broader_term
+# old_o=a
+# new_s=b
+# new_p=crm:P127_has_broader_term
+# new_o=c
+
+<b> crm:crm:P127_has_broader_term <a> . # sera supprimé
+<b> crm:crm:P127_has_broader_term <c> . # sera créé
+
+# POST -> créer un truc
+# DELETE -> supprimer un truc
+# PUT -> mettre à jour un truc, mais en soumettant TOUS les champs
+# PATCH -> mettre à jour un truc, en ne soumettant que ce qui change
+# GET -> lire un truc
+
+# Sur la question du renommage, il faut :
+#   - pouvoir corriger un nom existant
+#   - pouvoir proposer une variante plus à jour
+
+# Route générique de correction de valeur d'une annotation
+# PUT /e13p141
+# s=http://data-iremus.huma-num.fr/id/81731880-41b1-4105-ace8-36f01882908d (un E13)
+# new_o="La valeur corrigée"
+
+# AVANT
+<81731880-41b1-4105-ace8-36f01882908d>
+    a crm:E13_Attribute_Assignment ;
+    dcterms:created "2021-02-25" ;
+    crm:P14_carried_out_by <c04d9cb0-a31d-4b84-9e6a-292c52101722> ;
+    crm:P140_assigned_attribute_to <239d3b62-d98c-4a7e-be96-dc2e556338a2> ;
+    crm:P177_assigned_property_type crm:P1_is_identified_by ;
+    crm:P141_assigned "Mon second concept" ;
+    .
+
+# APRÈS
+<81731880-41b1-4105-ace8-36f01882908d>
+    a crm:E13_Attribute_Assignment ;
+    dcterms:created "2021-02-25" ;
+    dcterms:updated "2021-02-27" ;
+    crm:P14_carried_out_by <c04d9cb0-a31d-4b84-9e6a-292c52101722> ;
+    crm:P140_assigned_attribute_to <239d3b62-d98c-4a7e-be96-dc2e556338a2> ;
+    crm:P177_assigned_property_type crm:P1_is_identified_by ;
+    crm:P141_assigned "La valeur corrigée" ;
+    .
