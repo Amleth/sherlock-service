@@ -24,10 +24,9 @@ import org.apache.jena.vocabulary.RDF;
 import javax.inject.Inject;
 import java.util.Map;
 
-@Controller("/resource")
+@Controller("/e13")
 @Secured(SecurityRule.IS_AUTHENTICATED)
-public class ResourceController {
-
+public class E13Controller {
     @Property(name = "jena")
     protected String jena;
 
@@ -43,29 +42,28 @@ public class ResourceController {
         // context
         String authenticatedUserUuid = (String) authentication.getAttributes().get("uuid");
         String now = dateService.getNow();
-        // new resource
-        String newResourceIri = sherlock.makeIri();
-        String newResourceTypeIri = sherlock.resolvePrefix(body.get("rdf:type"));
-        // e13 p1
-        String identifier = sherlock.resolvePrefix(body.get("crm:P1_is_identified_by"));
-        String e13p1Iri = sherlock.makeIri();
+        // new e13
+        String e13Iri = sherlock.makeIri();
+        String p140 = sherlock.resolvePrefix(body.get("crm:P140_assigned_attribute_to"));
+        String p177 = sherlock.resolvePrefix(body.get("crm:P177_assigned_property_type"));
+        String p141 = sherlock.resolvePrefix(body.get("crm:P141_assigned"));
+        String p141Type = sherlock.resolvePrefix(body.get("p141Type"));
 
         // UPDATE QUERY
         Model m = ModelFactory.createDefaultModel();
-        // new resource
-        Resource newResource = m.createResource(newResourceIri);
+        Resource e13 = m.createResource(e13Iri);
         Resource authenticatedUser = m.createResource(sherlock.makeIri(authenticatedUserUuid));
-        m.add(newResource, RDF.type, m.createResource(newResourceTypeIri));
-        m.add(newResource, DCTerms.creator, authenticatedUser);
-        m.add(newResource, DCTerms.created, now);
-        // e13 p1
-        Resource e13p1 = m.createResource(e13p1Iri);
-        m.add(e13p1, RDF.type, CIDOCCRM.E13_Attribute_Assignment);
-        m.add(e13p1, CIDOCCRM.P14_carried_out_by, authenticatedUser);
-        m.add(e13p1, CIDOCCRM.P140_assigned_attribute_to, newResource);
-        m.add(e13p1, CIDOCCRM.P141_assigned, m.createLiteral(identifier));
-        m.add(e13p1, CIDOCCRM.P177_assigned_property_type, CIDOCCRM.P1_is_identified_by);
-        m.add(e13p1, DCTerms.created, now);
+        m.add(e13, RDF.type, CIDOCCRM.E13_Attribute_Assignment);
+        m.add(e13, CIDOCCRM.P14_carried_out_by, authenticatedUser);
+        m.add(e13, CIDOCCRM.P140_assigned_attribute_to, m.createResource(p140));
+        m.add(e13, CIDOCCRM.P177_assigned_property_type, m.createResource(p177));
+        if (p141Type.equals("uri")) {
+            p141 = sherlock.resolvePrefix(p141);
+            m.add(e13, CIDOCCRM.P141_assigned, m.createResource(p141));
+        } else if (p141Type.equals("literal")) {
+            m.add(e13, CIDOCCRM.P141_assigned, m.createLiteral(p141));
+        }
+        m.add(e13, DCTerms.created, now);
 
         String updateWithModel = sherlock.makeUpdateQuery(m);
 
@@ -77,11 +75,8 @@ public class ResourceController {
 
             // AND READ IT BACK AS JSON-LD
             ConstructBuilder cb = new ConstructBuilder()
-                    .addConstruct(newResource, "?r_p", "?r_o")
-                    .addConstruct(e13p1, "?e13p1_p", "?e13p1_o")
-                    .addGraph(sherlock.getGraph(), newResource, "?r_p", "?r_o")
-                    .addGraph(sherlock.getGraph(), e13p1, "?e13p1_p", "?e13p1_o")
-                    .addGraph(sherlock.getGraph(), e13p1, CIDOCCRM.P140_assigned_attribute_to, newResource);
+                    .addConstruct(e13, "?e13_p", "?e13_o")
+                    .addGraph(sherlock.getGraph(), e13, "?e13_p", "?e13_o");
             Query q = cb.build();
             QueryExecution qe = conn.query(q);
             Model res = qe.execConstruct();
