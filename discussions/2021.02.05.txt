@@ -1,0 +1,28 @@
+https://app.diagrams.net/#G1KtlLMB7tTQ5_7mVpwJMWEqbEuIDDcEsv
+
+
+V "Véhicules" (E32)
+    [P71] a "automobile" (E55)
+        [P150] r "roue" (E55)
+    [P71] b "bâteau" (E55)
+        [P127] c "catamaran" (E55)
+        [P127] d "destroyer" (E55)
+
+
+P71 = lists
+
+V P71 a
+V P71 b
+V P71 c
+V P71 d
+
+
+P127 = has broader term
+
+c P127 b
+d P127 b
+
+
+P150 = defines typical parts of
+
+r P150 a
