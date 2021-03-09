@@ -1,10 +1,9 @@
 package fr.cnrs.iremus.sherlock;
 
+import org.apache.jena.datatypes.xsd.XSDDateTime;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.*;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.apache.jena.vocabulary.DCTerms;
@@ -13,6 +12,9 @@ import org.apache.jena.vocabulary.RDFS;
 
 import javax.inject.Singleton;
 import java.io.ByteArrayOutputStream;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 @Singleton
@@ -66,5 +68,22 @@ public class Sherlock {
                 .replace("dcterms:", DCTerms.getURI())
                 .replace("rdf:", RDF.getURI())
                 .replace("rdfs:", RDFS.getURI());
+    }
+
+    public Literal getTypedLiteral(Model m, String type, String literal) {
+        switch (type) {
+            case "string":
+                return m.createTypedLiteral(literal);
+            case "integer":
+                return m.createTypedLiteral(Integer.valueOf(literal));
+            case "date":
+                Calendar calendar = Calendar.getInstance();
+                Date date = Date.from(Instant.parse(literal));
+                calendar.setTime(date);
+                new XSDDateTime(calendar);
+                return m.createTypedLiteral(calendar);
+            default:
+                return m.createLiteral(literal);
+        }
     }
 }
