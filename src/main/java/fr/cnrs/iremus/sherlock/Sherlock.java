@@ -41,6 +41,10 @@ public class Sherlock {
         return "INSERT DATA { GRAPH <" + this.getGraph() + "> {" + this.modelToString(m) + "}}";
     }
 
+    public String makeDeleteQuery(Model m) {
+        return "DELETE WHERE { GRAPH <" + this.getGraph() + "> {" + this.modelToString(m) + "}}";
+    }
+
     public String modelToString(Model m) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         m.write(baos, "Turtle");

@@ -32,6 +32,13 @@ class Common {
         return requestWithAuthorization
     }
 
+    HttpRequest makePutRequestWithAuthorization(client, String uri, requestBody) {
+        HttpRequest requestWithAuthorization = HttpRequest.PUT(uri, requestBody)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .bearerAuth(getAccessToken(client))
+        return requestWithAuthorization
+    }
+
     void fuck() {
         RDFConnectionRemoteBuilder builder = RDFConnectionFuseki.create().destination('http://localhost:3030/iremus');
         try (RDFConnectionFuseki conn = (RDFConnectionFuseki) builder.build()) {

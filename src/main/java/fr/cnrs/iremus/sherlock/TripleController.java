@@ -4,11 +4,8 @@ import io.micronaut.context.annotation.Property;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
-import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.*;
 import io.micronaut.http.annotation.Error;
-import io.micronaut.http.annotation.Post;
-import io.micronaut.http.annotation.Produces;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import org.apache.http.HttpException;
@@ -59,16 +56,16 @@ public class TripleController {
         if (newTripleObjectIsUri) {
             Resource newTripleObject = m.createResource(newTripleObjectIriOrLiteral);
             m.add(newTripleSubject, newTripleProperty, newTripleObject);
-        // is object a literal
+            // is object a literal
         } else {
             Literal literal;
             // typed literal
             if (newTripleObjectType != null) {
                 literal = sherlock.getTypedLiteral(m, newTripleObjectType, newTripleObjectIriOrLiteral);
-            // literal with lexical form
+                // literal with lexical form
             } else if (newTripleObjectLanguage != null) {
                 literal = m.createLiteral(newTripleObjectIriOrLiteral, newTripleObjectLanguage);
-            // basic literal
+                // basic literal
             } else {
                 literal = m.createLiteral(newTripleObjectIriOrLiteral);
             }
@@ -81,6 +78,53 @@ public class TripleController {
 
             // WRITE
             conn.update(updateWithModel);
+
+            return sherlock.modelToJson(m);
+        }
+    }
+
+    @Put
+    @Produces(MediaType.APPLICATION_JSON)
+    public String replace(@Body Map<String, String> body) throws HttpException {
+
+        // retrieve request body
+        String oldSubjectIri = body.get("old_s");
+        String oldPredicateIri = sherlock.resolvePrefix(body.get("old_p"));
+        String oldObjectIri = body.get("old_o");
+        String newSubjectIri = body.get("new_s");
+        String newPredicateIri = sherlock.resolvePrefix(body.get("new_p"));
+        String newObjectIri = body.get("new_o");
+
+        if (oldSubjectIri == null || oldPredicateIri == null
+                || oldObjectIri == null || newSubjectIri == null
+                || newPredicateIri == null || newObjectIri == null) {
+            throw new HttpException("missing parameter");
+        }
+
+        // UPDATE QUERY
+        Model m = ModelFactory.createDefaultModel();
+
+        // remove old triple
+        Resource oldSubject = m.createResource(oldSubjectIri);
+        org.apache.jena.rdf.model.Property oldProperty = m.createProperty(oldPredicateIri);
+        Resource oldObject = m.createResource(oldObjectIri);
+        m.add(oldSubject, oldProperty, oldObject);
+        String deleteWithModel = sherlock.makeDeleteQuery(m);
+        m.remove(oldSubject, oldProperty, oldObject);
+
+        // add new triple
+        Resource newSubject = m.createResource(newSubjectIri);
+        org.apache.jena.rdf.model.Property newProperty = m.createProperty(newPredicateIri);
+        Resource newObject = m.createResource(newObjectIri);
+        m.add(newSubject, newProperty, newObject);
+        String updateWithModel = sherlock.makeUpdateQuery(m);
+
+        RDFConnectionRemoteBuilder builder = RDFConnectionFuseki.create().destination(jena);
+        try (RDFConnectionFuseki conn = (RDFConnectionFuseki) builder.build()) {
+
+            // WRITE
+            conn.update(updateWithModel);
+            conn.update(deleteWithModel);
 
             return sherlock.modelToJson(m);
         }
