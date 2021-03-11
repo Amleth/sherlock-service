@@ -3,6 +3,7 @@ package fr.cnrs.iremus.sherlock.triple;
 import io.micronaut.core.annotation.Introspected;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 @Introspected
@@ -13,7 +14,7 @@ public class Triple {
     private String p;
     @NotBlank
     private String o;
-    @NotBlank
+    @NotNull
     private Boolean o_is_uri;
     private String o_type;
     private String o_lg;
