@@ -1,6 +1,7 @@
 package fr.cnrs.iremus.sherlock
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.RxHttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
@@ -45,11 +46,11 @@ class TripleControllerSpec extends Specification {
         String subjectIri = sherlock.makeIri()
         String propertyIri = CIDOCCRM.P1_is_identified_by
         String objectIri = sherlock.makeIri()
-        /*String json = client.toBlocking().(common.makePostRequestWithAuthorization(client, '/triple', [
+        String json = client.toBlocking().(common.makePostRequestWithAuthorization(client, '/triple', [
                 "s": subjectIri,
                 "p": propertyIri,
                 "o": objectIri,
-        ]))*/
+        ]))
         then:
         print("todo")
     }

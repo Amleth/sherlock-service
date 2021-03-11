@@ -26,3 +26,5 @@ d P127 b
 P150 = defines typical parts of
 
 r P150 a
+
+Note 2021.03.08 : j'ai demandé à Rebecca de réfléchir à un lien direct entre E32 et E55 racines, pour simplifier les requêtes SPARQL visant à reconsrtruire l'arbre.
