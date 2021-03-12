@@ -25,7 +25,7 @@ import org.apache.jena.vocabulary.DCTerms;
 import org.apache.jena.vocabulary.RDF;
 
 import javax.inject.Inject;
-import java.util.Map;
+import javax.validation.Valid;
 
 @Controller("/resource")
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -42,15 +42,15 @@ public class ResourceController {
 
     @Post
     @Produces(MediaType.APPLICATION_JSON)
-    public String create(@Body Map<String, String> body, Authentication authentication) throws ParseException {
+    public String create(@Valid @Body NewResource body, Authentication authentication) throws ParseException {
         // context
         String authenticatedUserUuid = (String) authentication.getAttributes().get("uuid");
         String now = dateService.getNow();
         // new resource
         String newResourceIri = sherlock.makeIri();
-        String newResourceTypeIri = sherlock.resolvePrefix(body.get("rdf:type"));
+        String newResourceTypeIri = sherlock.resolvePrefix(body.getType());
         // e13 p1
-        String identifier = sherlock.resolvePrefix(body.get("crm:P1_is_identified_by"));
+        String identifier = sherlock.resolvePrefix(body.getP1_is_identified_by());
         String e13p1Iri = sherlock.makeIri();
 
         // UPDATE QUERY

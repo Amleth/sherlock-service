@@ -24,8 +24,8 @@ class ResourceControllerSpec extends Specification {
         when:
         common.fuck()
         String json = client.toBlocking().retrieve(common.makePostRequestWithAuthorization(client, '/resource', Map.of(
-                "rdf:type", "crm:E32_Authority_Document",
-                "crm:P1_is_identified_by", "Ma liste de concepts"
+                "type", "crm:E32_Authority_Document",
+                "p1_is_identified_by", "Ma liste de concepts"
         )))
 
         then:
