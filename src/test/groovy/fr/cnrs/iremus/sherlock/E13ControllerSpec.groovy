@@ -30,10 +30,10 @@ class E13ControllerSpec extends Specification {
         String annotationValue = "J'aime les framboises"
 
         String json = client.toBlocking().retrieve(common.makePostRequestWithAuthorization(client, '/e13', [
-                "crm:P140_assigned_attribute_to" : annotatedResourceIri,
-                "crm:P177_assigned_property_type": annotationProperty,
-                "crm:P141_assigned"              : annotationValue,
-                "p141Type"                       : "literal"
+                "p140_assigned_attribute_to" : annotatedResourceIri,
+                "p177_assigned_property_type": annotationProperty,
+                "p141_assigned"              : annotationValue,
+                "p141_type"                  : "literal"
         ]))
         then:
         Object response = new ObjectMapper().readValue(json, Object.class)

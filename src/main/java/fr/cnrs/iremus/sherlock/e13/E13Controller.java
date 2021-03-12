@@ -1,5 +1,8 @@
-package fr.cnrs.iremus.sherlock;
+package fr.cnrs.iremus.sherlock.e13;
 
+import fr.cnrs.iremus.sherlock.CIDOCCRM;
+import fr.cnrs.iremus.sherlock.DateService;
+import fr.cnrs.iremus.sherlock.Sherlock;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
@@ -22,7 +25,7 @@ import org.apache.jena.vocabulary.DCTerms;
 import org.apache.jena.vocabulary.RDF;
 
 import javax.inject.Inject;
-import java.util.Map;
+import javax.validation.Valid;
 
 @Controller("/e13")
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -38,16 +41,16 @@ public class E13Controller {
 
     @Post
     @Produces(MediaType.APPLICATION_JSON)
-    public String create(@Body Map<String, String> body, Authentication authentication) throws ParseException {
+    public String create(@Valid @Body NewE13 body, Authentication authentication) throws ParseException {
         // context
         String authenticatedUserUuid = (String) authentication.getAttributes().get("uuid");
         String now = dateService.getNow();
         // new e13
         String e13Iri = sherlock.makeIri();
-        String p140 = sherlock.resolvePrefix(body.get("crm:P140_assigned_attribute_to"));
-        String p177 = sherlock.resolvePrefix(body.get("crm:P177_assigned_property_type"));
-        String p141 = sherlock.resolvePrefix(body.get("crm:P141_assigned"));
-        String p141Type = sherlock.resolvePrefix(body.get("p141Type"));
+        String p140 = sherlock.resolvePrefix(body.getP140_assigned_attribute_to());
+        String p177 = sherlock.resolvePrefix(body.getP177_assigned_property_type());
+        String p141 = sherlock.resolvePrefix(body.getP141_assigned());
+        String p141Type = sherlock.resolvePrefix(body.getP141_type());
 
         // UPDATE QUERY
         Model m = ModelFactory.createDefaultModel();
