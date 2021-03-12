@@ -1,5 +1,8 @@
-package fr.cnrs.iremus.sherlock;
+package fr.cnrs.iremus.sherlock.resource;
 
+import fr.cnrs.iremus.sherlock.CIDOCCRM;
+import fr.cnrs.iremus.sherlock.DateService;
+import fr.cnrs.iremus.sherlock.Sherlock;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
