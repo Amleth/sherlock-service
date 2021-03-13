@@ -23,6 +23,11 @@ public class AuthenticationProviderUserPassword implements AuthenticationProvide
                 ud.setAttributes(Map.of("uuid", "4b15a57d-8cae-43c5-8096-187b58d29327"));
                 emitter.onNext(ud);
                 emitter.onComplete();
+            } else if (authenticationRequest.getIdentity().equals("hudson") && authenticationRequest.getSecret().equals("password")) {
+                UserDetails ud = new UserDetails((String) authenticationRequest.getIdentity(), new ArrayList<>());
+                ud.setAttributes(Map.of("uuid", "2aaa240d-57e2-4bc1-96e7-714126a5bcff"));
+                emitter.onNext(ud);
+                emitter.onComplete();
             } else {
                 emitter.onError(new AuthenticationException(new AuthenticationFailed()));
             }

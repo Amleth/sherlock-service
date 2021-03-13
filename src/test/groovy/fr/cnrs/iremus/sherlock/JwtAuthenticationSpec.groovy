@@ -25,7 +25,7 @@ class JwtAuthenticationSpec extends Specification {
 
     void 'Accessing a secured URL without authenticating returns unauthorized'() {
         when:
-        client.toBlocking().exchange(HttpRequest.GET('/', ))
+        client.toBlocking().exchange(HttpRequest.GET('/',))
 
         then:
         HttpClientResponseException e = thrown()
@@ -53,7 +53,7 @@ class JwtAuthenticationSpec extends Specification {
 
         when: 'passing the access token as in the Authorization HTTP Header with the prefix Bearer allows the user to access a secured endpoint'
         String accessToken = bearerAccessRefreshToken.accessToken
-        HttpRequest requestWithAuthorization = HttpRequest.GET('/' )
+        HttpRequest requestWithAuthorization = HttpRequest.GET('/')
                 .accept(MediaType.TEXT_PLAIN)
                 .bearerAuth(accessToken)
         HttpResponse<String> response = client.toBlocking().exchange(requestWithAuthorization, String)

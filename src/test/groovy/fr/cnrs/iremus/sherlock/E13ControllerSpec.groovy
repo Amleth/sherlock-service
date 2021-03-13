@@ -1,6 +1,6 @@
 package fr.cnrs.iremus.sherlock
 
-import com.fasterxml.jackson.databind.ObjectMapper
+
 import io.micronaut.http.client.RxHttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
@@ -29,14 +29,16 @@ class E13ControllerSpec extends Specification {
         String annotationProperty = DCTerms.title.toString()
         String annotationValue = "J'aime les framboises"
 
-        String json = client.toBlocking().retrieve(common.makePostRequestWithAuthorization(client, '/e13', [
+        def token = common.getAccessToken("sherlock", "password")
+
+        def response = common.post(token, '/e13', [
                 "p140_assigned_attribute_to" : annotatedResourceIri,
                 "p177_assigned_property_type": annotationProperty,
                 "p141_assigned"              : annotationValue,
                 "p141_type"                  : "literal"
-        ]))
+        ])
+
         then:
-        Object response = new ObjectMapper().readValue(json, Object.class)
         response["@id"].startsWith(sherlock.getResourcePrefix())
         ValidateUUID.isValid(response["@id"].split("/").last())
         response["@type"] == CIDOCCRM.E13_Attribute_Assignment.toString()
