@@ -31,7 +31,7 @@ Documentation de l'API : [Micronaut OpenAPI/Swagger Support](https://micronaut-
 
 Obtention & utilisation du *token access* :
 ```sh
-curl -X "POST" "http://localhost:5555/login" \
+curl -X "POST" "http://localhost:5555/sherlock/api/login" \
   -H 'Content-Type: application/json; charset=utf-8' \
   -d '{ "username": "sherlock", "password": "password" }'
 ```
@@ -43,7 +43,7 @@ curl -v -i -H "Authorization: Bearer <access_token>>" http://localhost:5555
 
 Obtention et utilisation immédiate du *token access* :
 ```sh
-TOKEN=$(curl -s -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"username":"sherlock","password":"password"}' http://localhost:5555/login | jq -r .access_token) ; curl -H "Content-Type: application/json" -X POST -d '{"caca":"boudin"}' -H "Authorization: Bearer $TOKEN>" http://localhost:5555/resource | jq
+TOKEN=$(curl -s -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"username":"sherlock","password":"password"}' http://localhost:5555/sherlock/api/login | jq -r .access_token) ; curl -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN>" http://localhost:5555/sherlock/api/ | jq
 ```
 
 ## Test

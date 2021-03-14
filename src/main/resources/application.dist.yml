@@ -7,6 +7,9 @@ micronaut:
       enabled: true
   security:
     authentication: bearer
+    endpoints:
+      login:
+        path: /sherlock/api/login
     token:
       jwt:
         signatures:

@@ -25,7 +25,7 @@ class Common {
     @Deprecated
     String getAccessToken(client) {
         UsernamePasswordCredentials creds = new UsernamePasswordCredentials('sherlock', 'password')
-        HttpRequest request = HttpRequest.POST('/login', creds)
+        HttpRequest request = HttpRequest.POST('/sherlock/api/login', creds)
         HttpResponse<BearerAccessRefreshToken> rsp = client.toBlocking().exchange(request, BearerAccessRefreshToken)
         BearerAccessRefreshToken bearerAccessRefreshToken = rsp.body()
         String accessToken = bearerAccessRefreshToken.accessToken
@@ -50,7 +50,7 @@ class Common {
 
     String getAccessToken(String username, String password) {
         UsernamePasswordCredentials creds = new UsernamePasswordCredentials(username, password)
-        HttpRequest request = HttpRequest.POST('/login', creds)
+        HttpRequest request = HttpRequest.POST('/sherlock/api/login', creds)
         HttpResponse<BearerAccessRefreshToken> rsp = client.toBlocking().exchange(request, BearerAccessRefreshToken)
         BearerAccessRefreshToken bearerAccessRefreshToken = rsp.body()
         String accessToken = bearerAccessRefreshToken.accessToken

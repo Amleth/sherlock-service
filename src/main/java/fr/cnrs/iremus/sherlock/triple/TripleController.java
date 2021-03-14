@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.util.Map;
 
-@Controller("/triple")
+@Controller("/sherlock/api/triple")
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class TripleController {
 

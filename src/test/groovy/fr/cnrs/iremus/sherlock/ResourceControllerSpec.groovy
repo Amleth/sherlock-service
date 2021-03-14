@@ -26,7 +26,7 @@ class ResourceControllerSpec extends Specification {
 
         def token = common.getAccessToken("sherlock", "password")
 
-        def response = common.post(token, '/resource', [
+        def response = common.post(token, '/sherlock/api/resource', [
                 type               : "crm:E32_Authority_Document",
                 p1_is_identified_by: "Ma liste de concepts"
         ])

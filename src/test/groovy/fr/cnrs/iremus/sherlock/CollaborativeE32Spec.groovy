@@ -23,13 +23,13 @@ class CollaborativeE32Spec extends Specification {
         String u2Token = common.getAccessToken("hudson", "password")
 
         // U1 crée un E32
-        def E32 = common.post(u1Token, '/resource', [
+        def E32 = common.post(u1Token, '/sherlock/api/resource', [
                 type               : "crm:E32_Authority_Document",
                 p1_is_identified_by: "Mon thésaurus"
         ])
 
         // U1 crée un premier concept
-        def E55A = common.post(u1Token, '/linked_resource', [
+        def E55A = common.post(u1Token, '/sherlock/api/linked_resource', [
                 type               : "crm:E55_Type",
                 p1_is_identified_by: "Mon premier concept",
                 "links"            : [
@@ -45,7 +45,7 @@ class CollaborativeE32Spec extends Specification {
         ])
 
         // U1 crée un deuxième concept
-        def E55B = common.post(u1Token, '/linked_resource', [
+        def E55B = common.post(u1Token, '/sherlock/api/linked_resource', [
                 type               : "crm:E55_Type",
                 p1_is_identified_by: "Mon deuxième concept",
                 "links"            : [
@@ -60,7 +60,7 @@ class CollaborativeE32Spec extends Specification {
         ])
 
         // U2 s'abonne au E32 créé par U1
-        def sub = common.post(u1Token, '/triple', [
+        def sub = common.post(u1Token, '/sherlock/api/triple', [
                 s     : U2,
                 p     : Sherlock.sheP_subscribe,
                 o     : E32["@id"],

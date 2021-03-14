@@ -27,7 +27,7 @@ import org.apache.jena.vocabulary.RDF;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
-@Controller("/resource")
+@Controller("/sherlock/api/resource")
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class ResourceController {
 

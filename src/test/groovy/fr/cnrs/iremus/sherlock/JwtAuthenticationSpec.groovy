@@ -25,7 +25,7 @@ class JwtAuthenticationSpec extends Specification {
 
     void 'Accessing a secured URL without authenticating returns unauthorized'() {
         when:
-        client.toBlocking().exchange(HttpRequest.GET('/',))
+        client.toBlocking().exchange(HttpRequest.GET('/sherlock/api/',))
 
         then:
         HttpClientResponseException e = thrown()
@@ -35,7 +35,7 @@ class JwtAuthenticationSpec extends Specification {
     void "upon successful authentication, a Json Web token is issued to the user"() {
         when: 'Login endpoint is called with valid credentials'
         UsernamePasswordCredentials creds = new UsernamePasswordCredentials("sherlock", "password")
-        HttpRequest request = HttpRequest.POST('/login', creds)
+        HttpRequest request = HttpRequest.POST('/sherlock/api/login', creds)
         HttpResponse<BearerAccessRefreshToken> rsp = client.toBlocking().exchange(request, BearerAccessRefreshToken)
 
         then: 'the endpoint can be accessed'
@@ -53,7 +53,7 @@ class JwtAuthenticationSpec extends Specification {
 
         when: 'passing the access token as in the Authorization HTTP Header with the prefix Bearer allows the user to access a secured endpoint'
         String accessToken = bearerAccessRefreshToken.accessToken
-        HttpRequest requestWithAuthorization = HttpRequest.GET('/')
+        HttpRequest requestWithAuthorization = HttpRequest.GET('/sherlock/api/')
                 .accept(MediaType.TEXT_PLAIN)
                 .bearerAuth(accessToken)
         HttpResponse<String> response = client.toBlocking().exchange(requestWithAuthorization, String)

@@ -9,7 +9,7 @@ import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
-@Controller
+@Controller("/sherlock/api/")
 public class HomeController {
 
     @Get

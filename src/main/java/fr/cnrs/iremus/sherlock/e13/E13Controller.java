@@ -27,7 +27,7 @@ import org.apache.jena.vocabulary.RDF;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
-@Controller("/e13")
+@Controller("/sherlock/api/e13")
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class E13Controller {
     @Property(name = "jena")

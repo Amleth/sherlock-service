@@ -31,7 +31,7 @@ class E13ControllerSpec extends Specification {
 
         def token = common.getAccessToken("sherlock", "password")
 
-        def response = common.post(token, '/e13', [
+        def response = common.post(token, '/sherlock/api/e13', [
                 "p140_assigned_attribute_to" : annotatedResourceIri,
                 "p177_assigned_property_type": annotationProperty,
                 "p141_assigned"              : annotationValue,
