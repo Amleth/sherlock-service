@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: fr.cnrs.iremus.sherlock
+testFramework: spock
+sourceLanguage: java
+buildTool: gradle
+features: [annotation-api, app-name, data, data-jdbc, gradle, h2, http-client, jackson-databind, java, java-application, jdbc-hikari, logback, micronaut-build, netty-server, openapi, reactor, reactor-http-client, readme, security, security-annotations, security-jwt, security-ldap, shade, spock]
