@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: "SHERLOCK API"
+  version: "1.0.0"
+servers:
+  - url: http://data-iremus.huma-num.fr/sherlock/api
+paths:
+  /selection:
+    post:
+      summary: Create a selection
+      tags:
+        - selection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sherlockns:has_document_context:
+                  type: string
+                children:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - sherlockns:has_document_context
+                - children
+      responses:
+        "201":
+          description: Selection created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  iri:
+                    type: string
+                  children:
+                    type: array
+                    items:
+                      type: string
+                  dcterms:created:
+                    type: string
+  /selection/{selectionIri}:
+    patch:
+      summary: Modify a selection's children
+      tags:
+        - selection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                children:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - children
+      responses:
+        "200":
+          description: Selection's children modified
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  iri:
+                    type: string
+                  children:
+                    type: array
+                    items:
+                      type: string
+    delete:
+      summary: Delete a selection
+      tags:
+        - selection
+      responses:
+        "204":
+          description: Selection deleted
