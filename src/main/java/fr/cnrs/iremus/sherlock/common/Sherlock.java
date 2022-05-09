@@ -7,6 +7,7 @@ import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
@@ -26,6 +27,7 @@ public class Sherlock {
     private static final Model m_model = ModelFactory.createDefaultModel();
     public static final Resource sheP_a_pour_entite_de_plus_haut_niveau = m_model.createResource(NS + "sheP_a_pour_entité_de_plus_haut_niveau");
     public static final Resource sheP_subscribe = m_model.createResource(NS + "sheP_subscribe");
+    public static final Property sheP_has_document_context = m_model.createProperty(NS + "sheP_has_document_context");
 
     public Resource getGraph() {
         return m_model.createResource("http://data-iremus.huma-num.fr/graph/sherlock");
