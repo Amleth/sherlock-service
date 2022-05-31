@@ -66,26 +66,23 @@ class Common {
         return new ObjectMapper().readValue(json, Object.class)
     }
 
-    Object post(String accessToken, String route, Map body) {
+    Object post(String route, Map body) {
         HttpRequest request = HttpRequest.POST(route, body)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
-                .bearerAuth(accessToken)
         String response = client.toBlocking().retrieve(request)
         return parse(response)
     }
 
-    Object patch(String accessToken, String route, Map body) {
+    Object patch(String route, Map body) {
         HttpRequest request = HttpRequest.PATCH(route, body)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
-                .bearerAuth(accessToken)
         String response = client.toBlocking().retrieve(request)
         return parse(response)
     }
 
-    Object put(String accessToken, String route, Map body) {
+    Object put(String route, Map body) {
         HttpRequest request = HttpRequest.PUT(route, body)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
-                .bearerAuth(accessToken)
         String response = client.toBlocking().retrieve(request)
         return parse(response)
     }

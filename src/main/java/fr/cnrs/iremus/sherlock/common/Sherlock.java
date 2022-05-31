@@ -96,4 +96,9 @@ public class Sherlock {
                 return m.createLiteral(literal);
         }
     }
+
+    public String getUuidFromSherlockUri(String uri) {
+        String[] uriSplit = uri.split("/");
+        return uriSplit[uriSplit.length - 1];
+    }
 }

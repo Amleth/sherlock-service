@@ -13,6 +13,7 @@ import io.micronaut.security.authentication.UsernamePasswordCredentials
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
+import spock.lang.Ignore
 import spock.lang.Specification
 
 @MicronautTest
@@ -21,6 +22,7 @@ class JwtAuthenticationSpec extends Specification {
     @Client("/")
     RxHttpClient client
 
+    @Ignore("Default user is now authenticated in test cases (see groovy.fr.cnrs.iremus.sherlock.SecurityBypassFilter)")
     void 'Accessing a secured URL without authenticating returns unauthorized'() {
         when:
         client.toBlocking().exchange(HttpRequest.GET('/sherlock/api/',))
@@ -30,6 +32,7 @@ class JwtAuthenticationSpec extends Specification {
         e.status == HttpStatus.UNAUTHORIZED
     }
 
+    @Ignore("Authentication is now using OAuth2 protocol and not basic auth")
     void "upon successful authentication, a Json Web token is issued to the user"() {
         when: 'Login endpoint is called with valid credentials'
         UsernamePasswordCredentials creds = new UsernamePasswordCredentials("sherlock", "kcolrehs")

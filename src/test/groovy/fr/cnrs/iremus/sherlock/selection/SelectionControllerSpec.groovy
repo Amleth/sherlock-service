@@ -36,8 +36,7 @@ class SelectionControllerSpec extends Specification {
         String child1Iri = sherlock.makeIri()
         String child2Iri = sherlock.makeIri()
 
-        def token = common.getAccessToken()
-        def response = common.post(token, '/sherlock/api/selection', [
+        def response = common.post('/sherlock/api/selection', [
                 'sherlockns__has_document_context': documentContextIri,
                 'children': [child1Iri, child2Iri],
         ])
@@ -56,8 +55,7 @@ class SelectionControllerSpec extends Specification {
         String child1Iri = sherlock.makeIri()
         String child2Iri = sherlock.makeIri()
 
-        def token = common.getAccessToken()
-        def response = common.patch(token, '/sherlock/api/selection/mySelectionWhichDoesNotExist', [
+        def response = common.patch('/sherlock/api/selection/mySelectionWhichDoesNotExist', [
                 'children': [child1Iri, child2Iri],
         ])
 
@@ -72,15 +70,14 @@ class SelectionControllerSpec extends Specification {
         String child1Iri = sherlock.makeIri()
         String child2Iri = sherlock.makeIri()
 
-        def token = common.getAccessToken()
-        def postResponse = common.post(token, '/sherlock/api/selection/', [
+        def postResponse = common.post('/sherlock/api/selection/', [
                 'children': [child1Iri],
         ])
 
         def selectionIri = postResponse[0]["@id"] as String
         def selectionUuid = selectionIri.split("/").last()
 
-        def response = common.patch(token, "/sherlock/api/selection/${selectionUuid}", [
+        def response = common.patch("/sherlock/api/selection/${selectionUuid}", [
                 'children': [child2Iri],
         ])
 

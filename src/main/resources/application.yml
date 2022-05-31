@@ -7,16 +7,28 @@ micronaut:
     cors:
       enabled: true
   security:
-    authentication: bearer
-    endpoints:
-      login:
-        path: /api/login
+    authentication: cookie
+    redirect:
+      login-success: ${SSO_URL:`http://localhost:3001`}/redirect
+    oauth2:
+      clients:
+        orcid:
+          client_id: ${ORCID_CLIENT_ID}
+          client_secret: ${ORCID_CLIENT_SECRET}
+          scopes: '/authenticate'
+          authorization:
+            url: 'https://orcid.org/oauth/authorize'
+          token:
+            url: 'https://orcid.org/oauth/token'
+            auth-method: 'client-secret-post'
     token:
       jwt:
+        cookie:
+          cookie-http-only: false
         signatures:
           secret:
             generator:
-              secret: m2hm9T3VdnQK9hGpbarULdDQ5DCZcq3O
+              secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:m2hm9T3VdnQK9hGpbarULdDQ5DCZcq30}"'
         generator:
           access-token:
             expiration: 3600
