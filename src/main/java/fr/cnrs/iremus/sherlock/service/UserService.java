@@ -28,7 +28,7 @@ public class UserService {
     @Inject
     Sherlock sherlock;
 
-
+    private final String e55OrcidUuid = "d7ef2583-ff31-4913-9ed3-bc3a1c664b21";
     /**
      * Create user if not exists in database
      *
@@ -41,21 +41,23 @@ public class UserService {
 
         String e21Iri = sherlock.makeIri();
         String e42Iri = sherlock.makeIri();
+        String e55OrcidIri = sherlock.makeIri(e55OrcidUuid);
         String now = dateService.getNow();
 
 
         // BUILD MODEL
         Model m = ModelFactory.createDefaultModel();
         Resource e21_user = m.createResource(e21Iri);
+        Resource e55_orcid = m.createResource(e55OrcidIri);
         Resource e42_identifier = m.createResource(e42Iri);
         m.add(e21_user, CIDOCCRM.P1_is_identified_by, e42_identifier);
         m.add(e21_user, RDF.type, CIDOCCRM.E21_Person);
         m.add(e21_user, DCTerms.created, now);
         m.add(e42_identifier, RDF.type, CIDOCCRM.E42_Identifier);
-        m.add(e42_identifier, CIDOCCRM.P2_has_type, "orcid");
         m.add(e42_identifier, RDFS.label, orcid);
+        m.add(e42_identifier, CIDOCCRM.P2_has_type, e55_orcid);
 
-        String updateWithModel = sherlock.makeUpdateQuery(m);
+        String updateWithModel = sherlock.makeUpdateQuery(m, sherlock.getUserGraph());
         RDFConnectionRemoteBuilder builder = RDFConnectionFuseki.create().destination(jena);
         try (RDFConnectionFuseki conn = (RDFConnectionFuseki) builder.build()) {
             // WRITE
@@ -71,10 +73,10 @@ public class UserService {
             // WRITE
             SelectBuilder cb = new SelectBuilder()
                     .addVar( "*" )
-                    .addGraph(sherlock.getGraph(),"?E42_Identifier", RDFS.label, orcid)
-                    .addGraph(sherlock.getGraph(),"?E42_Identifier", RDF.type, CIDOCCRM.E42_Identifier)
-                    .addGraph(sherlock.getGraph(),"?E21_Person", CIDOCCRM.P1_is_identified_by, "?E42_Identifier")
-                    .addGraph(sherlock.getGraph(),"?E21_Person", RDF.type, CIDOCCRM.E21_Person);
+                    .addGraph(sherlock.getUserGraph(),"?E42_Identifier", RDFS.label, orcid)
+                    .addGraph(sherlock.getUserGraph(),"?E42_Identifier", RDF.type, CIDOCCRM.E42_Identifier)
+                    .addGraph(sherlock.getUserGraph(),"?E21_Person", CIDOCCRM.P1_is_identified_by, "?E42_Identifier")
+                    .addGraph(sherlock.getUserGraph(),"?E21_Person", RDF.type, CIDOCCRM.E21_Person);
             Query q = cb.build();
             QueryExecution qe = conn.query(q);
             ResultSetMem results = (ResultSetMem) ResultSetFactory.copyResults(qe.execSelect());

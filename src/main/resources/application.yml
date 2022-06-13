@@ -9,7 +9,8 @@ micronaut:
   security:
     authentication: cookie
     redirect:
-      login-success: ${SSO_URL:`http://localhost:3001`}/redirect
+      login-success: ${SSO_URL:`http://data-iremus.huma-num.fr/sso/`}?redirect=true
+      login-failure: ${SSO_URL:`http://data-iremus.huma-num.fr/sso/`}?failure=true
     oauth2:
       clients:
         orcid:

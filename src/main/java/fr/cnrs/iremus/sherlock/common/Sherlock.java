@@ -33,6 +33,10 @@ public class Sherlock {
         return m_model.createResource("http://data-iremus.huma-num.fr/graph/sherlock");
     }
 
+    public Resource getUserGraph() {
+        return m_model.createResource("http://data-iremus.huma-num.fr/graph/users");
+    }
+
     public String getResourcePrefix() {
         return "http://data-iremus.huma-num.fr/id/";
     }
@@ -47,6 +51,10 @@ public class Sherlock {
 
     public String makeUpdateQuery(Model m) {
         return "INSERT DATA { GRAPH <" + this.getGraph() + "> {" + this.modelToString(m) + "}}";
+    }
+
+    public String makeUpdateQuery(Model m, Resource graph) {
+        return "INSERT DATA { GRAPH <" + graph + "> {" + this.modelToString(m) + "}}";
     }
 
     public String makeDeleteQuery(Model m) {

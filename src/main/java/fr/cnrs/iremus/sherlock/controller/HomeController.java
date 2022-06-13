@@ -9,13 +9,15 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
 
-@Secured(SecurityRule.IS_AUTHENTICATED)
 @Controller("/api/")
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class HomeController {
 
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_HTML)
     @Get
     public String index(@Nullable Authentication authentication) {
-        return (String) authentication.getAttributes().get("uuid");
+        return authentication != null
+                ? (String) authentication.getAttributes().get("uuid")
+                : "<a href='/oauth/login/orcid'> Please connect</a>";
     }
 }
