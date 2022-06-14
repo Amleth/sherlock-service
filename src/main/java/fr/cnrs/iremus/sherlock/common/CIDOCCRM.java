@@ -14,6 +14,7 @@ public class CIDOCCRM {
     public static final Resource E21_Person = m_model.createResource(NS + "E21_Person");
     public static final Resource E28_Conceptual_Object = m_model.createResource(NS + "E28_Conceptual_Object");
     public static final Resource E32_Authority_Document = m_model.createResource(NS + "E32_Authority_Document");
+    public static final Resource E41_Appellation = m_model.createResource(NS + "E41_Appellation");
     public static final Resource E42_Identifier = m_model.createResource(NS + "E42_Identifier");
     public static final Property P1_is_identified_by = m_model.createProperty(NS + "P1_is_identified_by");
     public static final Property P2_has_type = m_model.createProperty(NS + "P2_has_type");
@@ -25,6 +26,7 @@ public class CIDOCCRM {
     public static final Property P141_assigned = m_model.createProperty(NS + "P141_assigned");
     public static final Property P150_defines_typical_parts_of = m_model.createProperty(NS + "P150_defines_typical_parts_of");
     public static final Property P177_assigned_property_of_type = m_model.createProperty(NS + "P177_assigned_property_of_type");
+    public static final Property P190_has_symbolic_content = m_model.createProperty(NS + "P190_has_symbolic_content");
 
     public static String getURI() {
         return NS;

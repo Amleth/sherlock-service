@@ -61,6 +61,10 @@ public class Sherlock {
         return "DELETE WHERE { GRAPH <" + this.getGraph() + "> {" + this.modelToString(m) + "}}";
     }
 
+    public String makeDeleteQuery(Model m, Resource graph) {
+        return "DELETE WHERE { GRAPH <" + graph + "> {" + this.modelToString(m) + "}}";
+    }
+
     public String modelToString(Model m) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         m.write(baos, "Turtle");
