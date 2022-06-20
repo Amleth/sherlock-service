@@ -17,14 +17,11 @@ paths:
             schema:
               type: object
               properties:
-                sherlockns:has_document_context:
-                  type: string
                 children:
                   type: array
                   items:
                     type: string
               required:
-                - sherlockns:has_document_context
                 - children
       responses:
         "201":
@@ -41,6 +38,8 @@ paths:
                     items:
                       type: string
                   dcterms:created:
+                    type: string
+                  dcterms:creator:
                     type: string
   /selection/{selectionIri}:
     patch:

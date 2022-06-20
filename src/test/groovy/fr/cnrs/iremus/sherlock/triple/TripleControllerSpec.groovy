@@ -31,8 +31,7 @@ class TripleControllerSpec extends Specification {
         String propertyIri = CIDOCCRM.P1_is_identified_by
         String objectIri = sherlock.makeIri()
 
-        def token = common.getAccessToken()
-        def response = common.post(token, '/sherlock/api/triple', [
+        def response = common.post('/sherlock/api/triple', [
                 "s"          : subjectIri,
                 "p"          : propertyIri,
                 "o"          : objectIri,
@@ -51,8 +50,7 @@ class TripleControllerSpec extends Specification {
         String subjectIri = sherlock.makeIri()
         String propertyIri = CIDOCCRM.P1_is_identified_by
         String objectIri = sherlock.makeIri()
-        def token = common.getAccessToken()
-        common.post(token, '/sherlock/api/triple', [
+        common.post('/sherlock/api/triple', [
                 "s": subjectIri,
                 "p": propertyIri,
                 "o": objectIri
@@ -70,8 +68,7 @@ class TripleControllerSpec extends Specification {
         String propertyIri = CIDOCCRM.P1_is_identified_by
         String aLiteral = "literal string"
 
-        def token = common.getAccessToken()
-        def response = common.post(token, '/sherlock/api/triple', [
+        def response = common.post('/sherlock/api/triple', [
                 "s"          : subjectIri,
                 "p"          : propertyIri,
                 "o"          : aLiteral,
@@ -90,8 +87,7 @@ class TripleControllerSpec extends Specification {
         String propertyIri = CIDOCCRM.P1_is_identified_by
         String aLiteral = "2007-12-03T10:15:30Z"
 
-        def token = common.getAccessToken()
-        def response = common.post(token, '/sherlock/api/triple', [
+        def response = common.post('/sherlock/api/triple', [
                 "s"          : subjectIri,
                 "p"          : propertyIri,
                 "o"          : aLiteral,
@@ -112,8 +108,7 @@ class TripleControllerSpec extends Specification {
         String propertyIri = CIDOCCRM.P1_is_identified_by
         String aLiteral = "pain"
 
-        def token = common.getAccessToken()
-        def response = common.post(token, '/sherlock/api/triple', [
+        def response = common.post('/sherlock/api/triple', [
                 "s"          : subjectIri,
                 "p"          : propertyIri,
                 "o"          : aLiteral,
@@ -138,8 +133,7 @@ class TripleControllerSpec extends Specification {
         String newPredicateIri = "crm:P14_carried_out_by"
         String newObjectIri = sherlock.makeIri()
 
-        def token = common.getAccessToken()
-        def response = common.put(token, '/sherlock/api/triple', [
+        def response = common.put('/sherlock/api/triple', [
                 "old_s": oldSubjectIri,
                 "old_p": oldPredicateIri,
                 "old_o": oldObjectIri,
@@ -162,8 +156,7 @@ class TripleControllerSpec extends Specification {
         String propertyIri = CIDOCCRM.P1_is_identified_by
         String objectLiteral = "pain"
 
-        def token = common.getAccessToken()
-        def response = common.post(token, '/sherlock/api/triple', [
+        def response = common.post('/sherlock/api/triple', [
                 "s"          : subjectIri,
                 "p"          : propertyIri,
                 "o"          : objectLiteral,

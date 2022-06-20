@@ -28,9 +28,8 @@ class LinkedResourceControllerSpec extends Specification {
     void 'test base linked_resource call'() {
         when:
         common.eraseall()
-        def token = common.getAccessToken("sherlock", "kcolrehs")
 
-        def response = common.post(token, '/sherlock/api/linked_resource', [
+        def response = common.post('/sherlock/api/linked_resource', [
                 type            : "crm:E1_CRM_Entity",
                 p1              : "Mon truc",
                 linked_resources: [
@@ -62,9 +61,8 @@ class LinkedResourceControllerSpec extends Specification {
     void 'test with full triple linked'() {
         when:
         common.eraseall()
-        def token = common.getAccessToken("sherlock", "kcolrehs")
 
-        common.post(token, '/sherlock/api/linked_resource', [
+        common.post('/sherlock/api/linked_resource', [
                 type            : "crm:E1_CRM_Entity",
                 p1              : "Mon truc",
                 linked_resources: [
@@ -84,9 +82,8 @@ class LinkedResourceControllerSpec extends Specification {
     void 'test without resource linked'() {
         when:
         common.eraseall()
-        def token = common.getAccessToken("sherlock", "kcolrehs")
 
-        common.post(token, '/sherlock/api/linked_resource', [
+        common.post('/sherlock/api/linked_resource', [
                 type: "crm:E1_CRM_Entity",
                 p1  : "Mon truc",
         ])

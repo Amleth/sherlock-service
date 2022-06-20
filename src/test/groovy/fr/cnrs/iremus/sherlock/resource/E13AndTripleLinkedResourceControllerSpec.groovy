@@ -27,9 +27,8 @@ class E13AndTripleLinkedResourceControllerSpec extends Specification {
     void 'test base e13AndTripleLinkedResource call'() {
         when:
         common.eraseall()
-        def token = common.getAccessToken("sherlock", "kcolrehs")
         String iri = sherlock.makeIri()
-        def response = common.post(token, '/sherlock/api/e13_and_triple_linked_resource', [
+        def response = common.post('/sherlock/api/e13_and_triple_linked_resource', [
                 type                : "crm:E1_CRM_Entity",
                 p1                  : "Mon truc",
                 e13_linked_resources: [

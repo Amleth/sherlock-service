@@ -29,9 +29,8 @@ class ResourceControllerSpec extends Specification {
         when:
         common.eraseall()
 
-        def token = common.getAccessToken("sherlock", "kcolrehs")
 
-        def response = common.post(token, '/sherlock/api/resource', [
+        def response = common.post('/sherlock/api/resource', [
                 type: "crm:E32_Authority_Document",
                 p1  : "Ma liste de concepts"
         ])

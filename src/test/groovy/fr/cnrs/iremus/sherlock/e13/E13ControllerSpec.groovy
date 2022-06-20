@@ -6,6 +6,8 @@ import fr.cnrs.iremus.sherlock.ValidateUUID
 import fr.cnrs.iremus.sherlock.common.CIDOCCRM
 import fr.cnrs.iremus.sherlock.common.Sherlock
 import fr.cnrs.iremus.sherlock.service.DateService
+import io.micronaut.http.HttpRequest
+import io.micronaut.http.MediaType
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.rxjava2.http.client.RxHttpClient
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
@@ -33,9 +35,7 @@ class E13ControllerSpec extends Specification {
         String annotationProperty = DCTerms.title.toString()
         String annotationValue = "J'aime les framboises"
 
-        def token = common.getAccessToken("sherlock", "kcolrehs")
-
-        def response = common.post(token, '/sherlock/api/e13', [
+        def response = common.post('/sherlock/api/e13', [
                 "p140"     : annotatedResourceIri,
                 "p177"     : annotationProperty,
                 "p141"     : annotationValue,

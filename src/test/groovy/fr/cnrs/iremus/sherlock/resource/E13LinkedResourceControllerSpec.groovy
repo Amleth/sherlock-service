@@ -28,9 +28,8 @@ class E13LinkedResourceControllerSpec extends Specification {
     void 'test base e13_linked_resource call'() {
         when:
         common.eraseall()
-        def token = common.getAccessToken("sherlock", "kcolrehs")
         String iri = sherlock.makeIri()
-        def response = common.post(token, '/sherlock/api/e13_linked_resource', [
+        def response = common.post('/sherlock/api/e13_linked_resource', [
                 type                : "crm:E1_CRM_Entity",
                 p1                  : "Mon truc",
                 e13_linked_resources: [
@@ -69,9 +68,8 @@ class E13LinkedResourceControllerSpec extends Specification {
     void 'test e13_linked_resource call fails if e13_linked_resources malformed 2'() {
         when:
         common.eraseall()
-        def token = common.getAccessToken("sherlock", "kcolrehs")
         String iri = sherlock.makeIri()
-        def response = common.post(token, '/sherlock/api/e13_linked_resource', [
+        def response = common.post('/sherlock/api/e13_linked_resource', [
                 type                : "crm:E1_CRM_Entity",
                 p1                  : "Mon truc",
                 e13_linked_resources: [
@@ -95,9 +93,8 @@ class E13LinkedResourceControllerSpec extends Specification {
     void 'test e13_linked_resource call fails if e13_linked_resources malformed 1'() {
         when:
         common.eraseall()
-        def token = common.getAccessToken("sherlock", "kcolrehs")
         String iri = sherlock.makeIri()
-        def response = common.post(token, '/sherlock/api/e13_linked_resource', [
+        def response = common.post('/sherlock/api/e13_linked_resource', [
                 type                : "crm:E1_CRM_Entity",
                 p1                  : "Mon truc",
                 e13_linked_resources: [
